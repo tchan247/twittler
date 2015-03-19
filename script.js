@@ -4,19 +4,20 @@ $(document).ready(function(){
   var tweets = streams.home.length;
   var index = 0;
   var $button = $('.load');
-  
+  var remaining;
   
   // init ------------------------------------------------------------------------
   $button.text('Load More Tweets');
 
   // load initial tweets
   var loadTweets = function(n) {
-    while(index < n){
+    while(n > 0){
       var tweet = streams.home[index];
-      var $tweet = $('<div></div>');
+      var $tweet = $('<div class=".tweet"></div>');
       $tweet.text('@' + tweet.user + ': ' + tweet.message);
       $tweet.prependTo($tweets);
       index ++;
+      n--;
     }
   }
   loadTweets(tweets);
@@ -25,17 +26,18 @@ $(document).ready(function(){
   // check for new tweets and 'hold' on to them
   setInterval(function(e){
 
-    var remaining = streams.home.length - index;
+    remaining = streams.home.length - index;
     var more = remaining === 0? 'More' : remaining;
     
     // update number on load tweets bar
     $button.text('Load ' + more + ' Tweets');
-    
+
   }, 1000);
 
   // load new tweets
   $('.load').on('click', function() {
-    loadTweets(tweets);
+    alert('remaining: ' + remaining +'\nindex: ' + index);
+    loadTweets(remaining);
   });
 
 });

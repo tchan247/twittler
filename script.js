@@ -5,6 +5,7 @@ $(document).ready(function(){
   var index = 0;
   var $button = $('.load');
   var remaining;
+  var time = new Date();
   
   // init ------------------------------------------------------------------------
   $button.text('Load More Tweets');
@@ -14,12 +15,29 @@ $(document).ready(function(){
     while(n > 0){
       var tweet = streams.home[index];
       var $tweet = $('<div class=".tweet"></div>');
-      $tweet.text('@' + tweet.user + ': ' + tweet.message);
+      var $msg = $('<p></p>').text('@' + tweet.user + ': ' + tweet.message);
+      var $timestamp = $('<p></p>').text(tweet.created_at.toString());
+
+      $tweet.append($msg);
+      $tweet.append($timestamp);
       $tweet.prependTo($tweets);
+
+      // add timestamp
+      $('')
+
       index ++;
       n--;
     }
   }
+
+  var updateTime = function(index) {
+    var tweeted = streams.home;
+    for(var i=0; i<index; i++) {
+      //streams.home[0];
+    }
+  }
+
+
   loadTweets(tweets);
 
   // body ------------------------------------------------------------------------
@@ -32,7 +50,7 @@ $(document).ready(function(){
     // update number on load tweets bar
     $button.text('Load ' + more + ' Tweets');
 
-  }, 1000);
+  }, 5000);
 
   // load new tweets
   $('.load').on('click', function() {

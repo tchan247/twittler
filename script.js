@@ -31,7 +31,7 @@ $(document).ready(function(){
     while(n > 0){
       var tweet = streams.home[index];
       var created = tweet.created_at;
-      var $tweet = $('<div class=".tweet"></div>');
+      var $tweet = $('<div class="tweet"></div>');
       var $msg = $('<p></p>').text('@' + tweet.user + ': ' + tweet.message);
       var $timestamp = $('<p></p>').text(ampm(created) + " - "+ created.getDay() + " " 
         + month[created.getMonth()] + " " + created.getYear());

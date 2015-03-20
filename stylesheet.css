@@ -1,6 +1,7 @@
 body {
 	background-color: #eee;
 	font-family: helvetica;
+	font-size: 14px;
 	margin: 0;
 	padding: 0;
 }
@@ -70,35 +71,49 @@ body {
 }
 
 .tweets_container {
-
+	width: 600px;
+	margin-top: 10px;
+	float: left;
+	background-color: white;
+	border: 1px solid lightblue;
+	border-radius: 5px;
 }
 
 .tweet_input {
 	height: 60px;
 	background-color: white;
+	border-bottom: 1px solid lightblue;
+	border-radius: 5px 5px 0 0;
 }
 
 .tweet_input input {
-	
+	width: 450px;
+	height: 20px;
+	margin-top: 18px;
+	margin-left: 10px;
+	font-family: Helvetica;
+	font-size: 14px;
+}
+
+.publish_tweet {
+	width: 100px;
+	height: 50px;
+	float: right;
+	background-color: lightblue;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 24px;
 }
 
 .load {
-	margin-top: 10px;
+	height: 20px;
 	display: inline-block;
-	background-color: white;
-}
-
-.tweets_container {
-	width: 600px;
-	margin-top: 10px;
-	float: left;
-	background-color: white;
-	border: 1px solid lightgrey;
-	border-radius: 5px;
+	background-color: lightblue;
+	/*visibility: hidden;*/
 }
 
 .tweets_menu {
-	border-bottom: 1px solid lightgrey;
+	border-bottom: 1px solid lightblue;
 }
 
 .tweets {

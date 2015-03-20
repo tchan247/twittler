@@ -6,10 +6,14 @@ body {
 }
 
 .wrapper {
-/*	margin-left: auto;
-	margin-right: auto;*/
-	float: right;
-	width: 1000px;
+	width: 900px;
+	display: block;
+	margin-bottom: 50px;
+	margin-left: 100px;
+	float: left;
+	overflow-y: visible;
+
+	border: 1px solid black;
 }
 
 .header {
@@ -28,19 +32,22 @@ body {
 .footer {
 	height: 100px;
 	display: block;
+	float: bottom;
 }
 
 .chan_art {
-	height: 200px;
+	height: 175px;
 	background-color: #0084B4;
 
 }
 
 .profile {
-	float: right;
+	/*float: right;*/
+	display: inline-block;
 	position: relative;
-	right: 100px;
-	top: -120px;
+	/*right: 100px;*/
+	left: 75px;
+	top: -180px;
 	z-index: 100;
 }
 
@@ -55,7 +62,7 @@ body {
 }
 
 .bar {
-	height: 50px;
+	height: 60px;
 	/*display: block;*/
 	background-color: white;
 }
@@ -68,8 +75,8 @@ body {
 
 .tweets_container {
 	width: 600px;
-	margin: 10px 120px 0 0px;
-	float: right;
+	margin-top: 10px;
+	float: left;
 	background-color: white;
 	border: 1px solid lightgrey;
 	border-radius: 5px;

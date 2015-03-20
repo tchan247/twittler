@@ -24,7 +24,11 @@ $(document).ready(function(){
   }
   
   // init ------------------------------------------------------------------------
-  $button.text('Load More Tweets');
+  $button.text('Load More Tweets'); // default button text
+  streams.users.user123 = [] // create user array for tweets
+  $('.profile').find('.image').find('img').attr('src',
+    'icons/owner_empty_avatar.png'
+  );  // add user profile picture
 
   // load initial tweets
   var loadTweets = function(n) {
@@ -71,6 +75,11 @@ $(document).ready(function(){
   $('.load').on('click', function() {
     alert('remaining: ' + remaining +'\nindex: ' + index);
     loadTweets(remaining);
+  });
+
+  // compose tweet
+  $('.tweet').on('click', function() { 
+    
   });
 
 });

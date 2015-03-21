@@ -2,6 +2,7 @@ $(document).ready(function(){
 
   var $tweets = $('.tweets');
   var tweets = streams.home.length;
+  var tweeted = [];  // array of published tweets
   var index = 0;
   var $button = $('.load');
   var remaining;
@@ -13,14 +14,23 @@ $(document).ready(function(){
     var mer;
     if(h > 12) {
       h = h - 12;
-      mer = " PM"
+      mer = ' PM'
     } else {
-      mer = " AM"
+      mer = ' AM'
     }
 
-    h = h + ":" + obj.getMinutes() + mer;
+    h = h + ':' + obj.getMinutes() + mer;
 
     return h;
+  }
+
+  // user profile pictures
+  var pictures = {
+    shawndrost: 'shawndrost.jpg',
+    sharksforcheap: 'sharksforcheap.png',
+    mracus: 'mracus.jpg',
+    douglascalhoun: 'douglascalhoun.jpg',
+    user123: 'user123.gif'
   }
   
   // init ------------------------------------------------------------------------
@@ -35,11 +45,15 @@ $(document).ready(function(){
     while(n > 0){
       var tweet = streams.home[index];
       var created = tweet.created_at;
+      var $pic = $('<img>').attr('src', 'images/' + pictures[tweet.user]);
       var $tweet = $('<div class="tweet"></div>');
-      var $msg = $('<p></p>').text('@' + tweet.user + ': ' + tweet.message);
+      var $username = $('<a></a>').attr('href', '').addClass('username').text('@' + tweet.user);
+      var $msg = $('<p></p>').text(tweet.message);
       var $timestamp = $('<p></p>').text(ampm(created) + " - "+ created.getDay() + " " 
         + month[created.getMonth()] + " " + created.getYear());
 
+      $tweet.append($pic);
+      $tweet.append($username);
       $tweet.append($msg);
       $tweet.append($timestamp);
       $tweet.prependTo($tweets);
@@ -50,7 +64,6 @@ $(document).ready(function(){
   }
 
   var updateTime = function(index) {
-    var tweeted = streams.home;
     for(var i=0; i<index; i++) {
       //streams.home[0];
     }

@@ -24,10 +24,19 @@ body {
 	background-color: white;
 }
 
-.header .top{
+.header .header_buttons {
+	margin-right: 100px;
+	float: right;
+
+}
+
+.header .buttons div {
 	display: inline-block;
-	background-color: #0084B4;
 	margin: auto 5px;
+
+	background-color: #0084B4;
+
+	float: right;
 }
 
 .footer {
@@ -81,6 +90,7 @@ body {
 
 .tweet_input {
 	height: 60px;
+	padding: 10px;
 	background-color: #dbf6ff;
 	border-bottom: 1px solid lightblue;
 	border-radius: 5px 5px 0 0;
@@ -89,21 +99,25 @@ body {
 .tweet_input input {
 	width: 450px;
 	height: 20px;
-	margin-top: 18px;
-	margin-left: 10px;
 	font-family: Helvetica;
 	font-size: 14px;
+	color: lightblue;
 }
 
 .publish_tweet {
 	width: 100px;
-	height: 50px;
+	height: 25px;
 	float: right;
 	background-color: lightblue;
 	border-radius: 5px;
-	text-align: center;
-	font-size: 24px;
 	cursor: default;
+}
+
+.publish_tweet p {
+		font-size: 20px;
+		text-align: center;
+		position: relative;
+		margin-top: 5px;
 }
 
 .load {

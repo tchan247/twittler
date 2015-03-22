@@ -5,6 +5,7 @@ $(document).ready(function(){
   var tweets = streams.home.length;
   var tweeted = 0;
   var $button = $('.load');
+  var focused = false;
   var remaining;
   var currentUser;
   var myTweets = [];
@@ -86,6 +87,19 @@ $(document).ready(function(){
 
   }
 
+  // get respective array of tweets on currently viewed page
+  var getList = function() {
+
+    if(currentUser === undefined) {
+      return streams.home
+    } else if (currentUser === login){
+      return myTweets;
+    } else {
+      return streams.home[current];
+    }
+
+  }
+
   // update the date difference
   var updateTime = function(index) {
     for(var i=0; i<index; i++) {
@@ -101,9 +115,8 @@ $(document).ready(function(){
   setInterval(function(e){
 
     tweeted = $('.tweets').children().length;
-    var list = currentUser === undefined? streams.home : streams.users[currentUser];
 
-    remaining = list.length - tweeted;
+    remaining = getList().length - tweeted;
     // var more = remaining === 0? 'More' : remaining;   
     if(remaining > 0) {
       // update number on load tweets bar
@@ -119,25 +132,16 @@ $(document).ready(function(){
     $(this).hide(400);
     $tweets.empty();  //!!! need to refactor
 
-    var list = currentUser === undefined? streams.home : streams.users[currentUser];
-
-    loadTweets(list);
+    loadTweets(getList());
   });
 
   // compose tweet
   $('.publish_tweet').on('click', function() { 
-    var text = $('.tweet_input').find('input').val();
 
-    if(text.length > 0) {
+    var input = $('.tweet_input').find('input');
+    var text = input.val();
 
-      // publish tweet on page user is currently viewing
-      var list = (function() {
-        if(currentUser === undefined) {
-          return streams.home
-        } else if (currentUser === login){
-          return myTweets;
-        }
-      }());
+    if(text.length > 0 && focused) {
 
       // create tweet object
       var tweet = {
@@ -150,12 +154,33 @@ $(document).ready(function(){
       streams.home.push(tweet);
 
       $('.tweets').empty();
-      loadTweets(list);
+      loadTweets(getList());
     }
+
+    focused = false;
   });
 
+  // input field default value
+  // text area focused
+  $('.tweet_input').find('input').on('focus', function() {
+    if(!focused) {
+      $(this).val('');
+    }
+
+    focused = true
+    $(this).css('color', 'black');
+  });
+
+  //text area unfocused
+  $('.tweet_input').find('input').on('blur', function() {
+    if($(this).val().length === 0) {
+      $(this).val("What's happening?").css('color', 'lightblue');
+      focused = false;
+    }
+  })
+
   //return home
-  $('.top').on('click', function() {
+  $('.home').on('click', function() {
 
     currentUser = undefined;
     $('.tweet_input').show();

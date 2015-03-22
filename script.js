@@ -1,11 +1,13 @@
 $(document).ready(function(){
 
+  var login = 'user123';  // current users account
   var $tweets = $('.tweets');
   var tweets = streams.home.length;
   var tweeted = 0;
   var $button = $('.load');
   var remaining;
   var currentUser;
+  var myTweets = [];
   // timestamp variables
   var timestamps = [];
   var time = new Date();
@@ -37,7 +39,6 @@ $(document).ready(function(){
   // init ------------------------------------------------------------------------
   $button.text('Load More Tweets'); // default button text
   $('.load').hide();
-  streams.users.user123 = [] // create user array for tweets
   $('.profile').find('.image').find('img').attr('src',
     'icons/owner_empty_avatar.png'
   );  // add user profile picture
@@ -119,16 +120,23 @@ $(document).ready(function(){
   });
 
   // compose tweet
-  $('.tweet').on('click', function() { 
-    var list = currentUser === undefined? streams.home : streams.users[currentUser];
-    var text;
-    var tweet = {
-      created_at : time,
-      message : text,
-      user: 'user123'
-    };
-    streams.home.push(tweet);
-    loadTweets(list);
+  $('.publish_tweet').on('click', function() { 
+    var text = $('.tweet_input').find('input').val();
+
+    if(text.length > 0) {
+      var list = currentUser === undefined? streams.home : streams.users[currentUser];
+
+      var tweet = {
+        created_at : time,
+        message : text,
+        user: login
+      };
+
+      myTweets.push(tweet);
+      streams.home.push(tweet);
+
+      loadTweets(list);
+    }
   });
 
   //return home

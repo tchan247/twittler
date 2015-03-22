@@ -103,6 +103,7 @@ body {
 	border-radius: 5px;
 	text-align: center;
 	font-size: 24px;
+	cursor: default;
 }
 
 .load {

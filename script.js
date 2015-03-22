@@ -14,6 +14,7 @@ $(document).ready(function(){
   var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var ampm = function(obj) {
     var h = obj.getHours();
+    var min = ('0'+obj.getMinutes()).slice(-2);
     var mer;
     if(h > 12) {
       h = h - 12;
@@ -22,7 +23,7 @@ $(document).ready(function(){
       mer = ' AM'
     }
 
-    h = h + ':' + obj.getMinutes() + mer;
+    h = h + ':' + min + mer;
 
     return h;
   }
@@ -47,10 +48,14 @@ $(document).ready(function(){
   var checkTimeline = function() {
     var person = $(this).closest('.tweet').find('.username').text().substring(1);
     currentUser = person;
-    loadTweets(streams.home);
+
+    if(person !== login) {
+      $('.tweet_input').hide();
+    };
+
     $tweets.empty();
     $('.load').hide();
-    loadTweets(streams.users[person]);
+    loadTweets(person === login? myTweets : streams.users[person]);
   }
 
   // load tweets from a list
@@ -124,8 +129,17 @@ $(document).ready(function(){
     var text = $('.tweet_input').find('input').val();
 
     if(text.length > 0) {
-      var list = currentUser === undefined? streams.home : streams.users[currentUser];
 
+      // publish tweet on page user is currently viewing
+      var list = (function() {
+        if(currentUser === undefined) {
+          return streams.home
+        } else if (currentUser === login){
+          return myTweets;
+        }
+      }());
+
+      // create tweet object
       var tweet = {
         created_at : time,
         message : text,
@@ -135,10 +149,18 @@ $(document).ready(function(){
       myTweets.push(tweet);
       streams.home.push(tweet);
 
+      $('.tweets').empty();
       loadTweets(list);
     }
   });
 
   //return home
+  $('.top').on('click', function() {
+
+    currentUser = undefined;
+    $('.tweet_input').show();
+
+    loadTweets(streams.home);
+  });
 
 });

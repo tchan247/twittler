@@ -3,10 +3,10 @@ $(document).ready(function(){
   var $tweets = $('.tweets');
   var tweets = streams.home.length;
   var tweeted = [];  // array of published tweets
-  var index = 0;
   var $button = $('.load');
   var remaining;
   // timestamp variables
+  var timestamps = [];
   var time = new Date();
   var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var ampm = function(obj) {
@@ -41,13 +41,14 @@ $(document).ready(function(){
   );  // add user profile picture
 
   // load initial tweets
-  var loadTweets = function(n) {
-    while(n > 0){
-      var tweet = streams.home[index];
+  var loadTweets = function(arr) {
+
+    for(var i=0, len = arr.length; i<len; i++) {
+      var tweet = arr[i];
       var created = tweet.created_at;
       var $pic = $('<img>').attr('src', 'images/' + pictures[tweet.user]);
       var $tweet = $('<div class="tweet"></div>');
-      var $username = $('<a></a>').attr('href', '').addClass('username').text('@' + tweet.user);
+      var $username = $('<p class="username"></p>').text('@' + tweet.user);
       var $msg = $('<p></p>').text(tweet.message);
       var $timestamp = $('<p></p>').text(ampm(created) + " - "+ created.getDay() + " " 
         + month[created.getMonth()] + " " + created.getYear());
@@ -58,11 +59,12 @@ $(document).ready(function(){
       $tweet.append($timestamp);
       $tweet.prependTo($tweets);
 
-      index ++;
-      n--;
+      tweeted[tweeted.length] = tweet;  // save tweet in list
+      timestamps[timestamps.length] = created;
     }
   }
 
+  // update the date difference
   var updateTime = function(index) {
     for(var i=0; i<index; i++) {
       //streams.home[0];
@@ -70,24 +72,33 @@ $(document).ready(function(){
   }
 
 
-  loadTweets(tweets);
+  loadTweets(streams.home);
 
   // body ------------------------------------------------------------------------
   // check for new tweets and 'hold' on to them
   setInterval(function(e){
 
-    remaining = streams.home.length - index;
-    var more = remaining === 0? 'More' : remaining;
+    remaining = streams.home.length - tweeted.length;
+    var more = remaining === 0? 'More' : remaining;   
     
     // update number on load tweets bar
     $button.text('Load ' + more + ' Tweets');
 
-  }, 5000);
+  },  1000);
 
   // load new tweets
   $('.load').on('click', function() {
-    alert('remaining: ' + remaining +'\nindex: ' + index);
+    alert('remaining: ' + remaining +'\nindex: ' + tweeted.length);
     loadTweets(remaining);
+  });
+
+  // click user/ check timeline
+  $('.username').on('click', function() {
+    var person = $(this).text().substring(1);
+    console.log('clicked');
+    loadTweets(streams.home);
+    $tweets.empty();
+    loadTweets(streams.users[person]);
   });
 
   // compose tweet

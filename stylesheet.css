@@ -129,6 +129,7 @@ body {
 .username {
 	margin-left: 50px;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .tweets p {

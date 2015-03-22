@@ -36,6 +36,7 @@ $(document).ready(function(){
   
   // init ------------------------------------------------------------------------
   $button.text('Load More Tweets'); // default button text
+  $('.load').hide();
   streams.users.user123 = [] // create user array for tweets
   $('.profile').find('.image').find('img').attr('src',
     'icons/owner_empty_avatar.png'
@@ -43,10 +44,11 @@ $(document).ready(function(){
 
   // check timeline
   var checkTimeline = function() {
-    var person = $(this).text().substring(1);
-    console.log('clicked');
+    var person = $(this).closest('.tweet').find('.username').text().substring(1);
+    currentUser = person;
     loadTweets(streams.home);
     $tweets.empty();
+    $('.load').hide();
     loadTweets(streams.users[person]);
   }
 
@@ -60,8 +62,8 @@ $(document).ready(function(){
       var $tweet = $('<div class="tweet"></div>');
       var $username = $('<p class="username"></p>').text('@' + tweet.user);
       var $msg = $('<p></p>').text(tweet.message);
-      var $timestamp = $('<p></p>').text(ampm(created) + " - "+ created.getDay() + " " 
-        + month[created.getMonth()] + " " + created.getYear());
+      var $timestamp = $('<p></p>').text(ampm(created) + " - "+ created.getDate() + " " 
+        + month[created.getMonth()] + " " + created.getFullYear());
 
       $tweet.append($pic);
       $tweet.append($username);
@@ -74,7 +76,7 @@ $(document).ready(function(){
     }
 
     // add check timeline function to usernames
-    $('.username').on('click', checkTimeline);
+    $('.username, .user_icon').on('click', checkTimeline);
 
   }
 
@@ -93,27 +95,42 @@ $(document).ready(function(){
   setInterval(function(e){
 
     tweeted = $('.tweets').children().length;
-    remaining = streams.home.length - tweeted;
-    var more = remaining === 0? 'More' : remaining;   
-    
-    // update number on load tweets bar
-    $('.load').show(400);
-    $button.text('Load ' + more + ' Tweets');
+    var list = currentUser === undefined? streams.home : streams.users[currentUser];
 
-  },  1000);
+    remaining = list.length - tweeted;
+    // var more = remaining === 0? 'More' : remaining;   
+    if(remaining > 0) {
+      // update number on load tweets bar
+      $('.load').show(400);
+      $button.text('Load ' + remaining + (remaining === 1? ' Tweet' : ' Tweets'));
+    }
+  },  500);
 
   // load new tweets
   $('.load').on('click', function() {
-    console.log('remaining: ' + remaining +'\nindex: ' + tweeted.length);
+    // console.log('remaining: ' + remaining +'\nindex: ' + tweeted.length);
 
     $(this).hide(400);
-    $tweets.empty();
-    loadTweets(streams.home);
+    $tweets.empty();  //!!! need to refactor
+
+    var list = currentUser === undefined? streams.home : streams.users[currentUser];
+
+    loadTweets(list);
   });
 
   // compose tweet
   $('.tweet').on('click', function() { 
-    
+    var list = currentUser === undefined? streams.home : streams.users[currentUser];
+    var text;
+    var tweet = {
+      created_at : time,
+      message : text,
+      user: 'user123'
+    };
+    streams.home.push(tweet);
+    loadTweets(list);
   });
+
+  //return home
 
 });

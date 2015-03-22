@@ -133,6 +133,7 @@ body {
 
 .tweet .user_icon{
 	float: right;
+	cursor: pointer;
 }
 
 .tweet p {

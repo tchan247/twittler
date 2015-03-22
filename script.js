@@ -2,9 +2,10 @@ $(document).ready(function(){
 
   var $tweets = $('.tweets');
   var tweets = streams.home.length;
-  var tweeted = [];  // array of published tweets
+  var tweeted = 0;
   var $button = $('.load');
   var remaining;
+  var currentUser;
   // timestamp variables
   var timestamps = [];
   var time = new Date();
@@ -40,13 +41,22 @@ $(document).ready(function(){
     'icons/owner_empty_avatar.png'
   );  // add user profile picture
 
-  // load initial tweets
+  // check timeline
+  var checkTimeline = function() {
+    var person = $(this).text().substring(1);
+    console.log('clicked');
+    loadTweets(streams.home);
+    $tweets.empty();
+    loadTweets(streams.users[person]);
+  }
+
+  // load tweets from a list
   var loadTweets = function(arr) {
 
     for(var i=0, len = arr.length; i<len; i++) {
       var tweet = arr[i];
       var created = tweet.created_at;
-      var $pic = $('<img>').attr('src', 'images/' + pictures[tweet.user]);
+      var $pic = $('<img class="user_icon">').attr('src', 'images/users/' + pictures[tweet.user]);
       var $tweet = $('<div class="tweet"></div>');
       var $username = $('<p class="username"></p>').text('@' + tweet.user);
       var $msg = $('<p></p>').text(tweet.message);
@@ -59,9 +69,13 @@ $(document).ready(function(){
       $tweet.append($timestamp);
       $tweet.prependTo($tweets);
 
-      tweeted[tweeted.length] = tweet;  // save tweet in list
+
       timestamps[timestamps.length] = created;
     }
+
+    // add check timeline function to usernames
+    $('.username').on('click', checkTimeline);
+
   }
 
   // update the date difference
@@ -78,27 +92,23 @@ $(document).ready(function(){
   // check for new tweets and 'hold' on to them
   setInterval(function(e){
 
-    remaining = streams.home.length - tweeted.length;
+    tweeted = $('.tweets').children().length;
+    remaining = streams.home.length - tweeted;
     var more = remaining === 0? 'More' : remaining;   
     
     // update number on load tweets bar
+    $('.load').show(400);
     $button.text('Load ' + more + ' Tweets');
 
   },  1000);
 
   // load new tweets
   $('.load').on('click', function() {
-    alert('remaining: ' + remaining +'\nindex: ' + tweeted.length);
-    loadTweets(remaining);
-  });
+    console.log('remaining: ' + remaining +'\nindex: ' + tweeted.length);
 
-  // click user/ check timeline
-  $('.username').on('click', function() {
-    var person = $(this).text().substring(1);
-    console.log('clicked');
-    loadTweets(streams.home);
+    $(this).hide(400);
     $tweets.empty();
-    loadTweets(streams.users[person]);
+    loadTweets(streams.home);
   });
 
   // compose tweet

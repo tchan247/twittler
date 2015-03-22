@@ -81,7 +81,7 @@ body {
 
 .tweet_input {
 	height: 60px;
-	background-color: white;
+	background-color: #dbf6ff;
 	border-bottom: 1px solid lightblue;
 	border-radius: 5px 5px 0 0;
 }
@@ -107,8 +107,7 @@ body {
 
 .load {
 	height: 20px;
-	display: inline-block;
-	background-color: lightblue;
+	background-color: #dbf6ff;
 	/*visibility: hidden;*/
 }
 
@@ -127,12 +126,15 @@ body {
 }
 
 .username {
-	margin-left: 50px;
+	margin-left: 20px;
 	text-decoration: none;
 	cursor: pointer;
 }
 
-.tweets p {
-	margin-left: 50px;
-	display: block;
+.tweet .user_icon{
+	float: right;
+}
+
+.tweet p {
+	margin-left: 20px;
 }

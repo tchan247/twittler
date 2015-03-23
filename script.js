@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
   var login = 'user123';  // current users account
+  var profilePic = 'user123.gif';
   var $tweets = $('.tweets');
   var tweets = streams.home.length;
   var tweeted = 0;
@@ -11,8 +12,20 @@ $(document).ready(function(){
   var myTweets = [];
   // timestamp variables
   var timestamps = [];
-  var time = new Date();
   var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var timeAgo = function(obj) {
+    var time = new Date();
+    var hours = (time.getHours()-obj.getHours() + 24) % 24;
+    var mins = (time.getMinutes()-obj.getMinutes() + 60) % 60;
+
+    if(hours > 0) {
+      return hours + ' hour' + (hours>1? 's' : '') + ' ago';
+    } else if (mins > 0) {
+      return mins + ' minute' + (mins>1? 's' : '') + ' ago';
+    }
+
+    return 'Just now';
+  };
   var ampm = function(obj) {
     var h = obj.getHours();
     var min = ('0'+obj.getMinutes()).slice(-2);
@@ -27,7 +40,7 @@ $(document).ready(function(){
     h = h + ':' + min + mer;
 
     return h;
-  }
+  };
 
   // user profile pictures
   var pictures = {
@@ -36,13 +49,14 @@ $(document).ready(function(){
     mracus: 'mracus.jpg',
     douglascalhoun: 'douglascalhoun.jpg',
     user123: 'user123.gif'
-  }
+  };
   
   // init ------------------------------------------------------------------------
   $button.text('Load More Tweets'); // default button text
   $('.load').hide();
+  $('.username').text(login);
   $('.profile').find('.image').find('img').attr('src',
-    'icons/owner_empty_avatar.png'
+    'images/users/' + profilePic
   );  // add user profile picture
 
   // check timeline
@@ -69,17 +83,19 @@ $(document).ready(function(){
       var $tweet = $('<div class="tweet"></div>');
       var $username = $('<p class="username"></p>').text('@' + tweet.user);
       var $msg = $('<p></p>').text(tweet.message);
-      var $timestamp = $('<p></p>').text(ampm(created) + " - "+ created.getDate() + " " 
-        + month[created.getMonth()] + " " + created.getFullYear());
+      var $ago = $('<p class="timestamp"></p>').text(timeAgo(created));
+      var date = ampm(created) + ' - ' + created.getDate() + ' ' 
+        + month[created.getMonth()] + ' ' + created.getFullYear();
 
       $tweet.append($pic);
       $tweet.append($username);
       $tweet.append($msg);
-      $tweet.append($timestamp);
+
+      $tweet.append($ago);
+      $('.timestamp').attr('title', date);
+      // $tweet.append($date);
+
       $tweet.prependTo($tweets);
-
-
-      timestamps[timestamps.length] = created;
     }
 
     // add check timeline function to usernames
@@ -95,7 +111,7 @@ $(document).ready(function(){
     } else if (currentUser === login){
       return myTweets;
     } else {
-      return streams.home[current];
+      return streams.users[currentUser];
     }
 
   }
@@ -120,8 +136,11 @@ $(document).ready(function(){
     // var more = remaining === 0? 'More' : remaining;   
     if(remaining > 0) {
       // update number on load tweets bar
-      $('.load').show(400);
+      $('.load').show(300);
       $button.text('Load ' + remaining + (remaining === 1? ' Tweet' : ' Tweets'));
+
+      // update document title
+      $('title').text('(' + remaining + ') Twittler');
     }
   },  500);
 
@@ -129,8 +148,10 @@ $(document).ready(function(){
   $('.load').on('click', function() {
     // console.log('remaining: ' + remaining +'\nindex: ' + tweeted.length);
 
-    $(this).hide(400);
+    $(this).hide(300);
     $tweets.empty();  //!!! need to refactor
+
+    $('title').text('Twittler');
 
     loadTweets(getList());
   });
@@ -145,7 +166,7 @@ $(document).ready(function(){
 
       // create tweet object
       var tweet = {
-        created_at : time,
+        created_at : new Date(),
         message : text,
         user: login
       };
@@ -157,6 +178,7 @@ $(document).ready(function(){
       loadTweets(getList());
     }
 
+    input.val("What's happening?");
     focused = false;
   });
 

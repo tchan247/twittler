@@ -1,5 +1,9 @@
 body {
 	background-color: #eee;
+	background-image: url('images/background/background.jpg');
+	background-size: 100%;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
 	font-family: helvetica;
 	font-size: 14px;
 	margin: 0;
@@ -10,11 +14,11 @@ body {
 	width: 920px;
 	display: block;
 	margin-bottom: 50px;
-	margin-left: 100px;
-	float: left;
+	margin-right: 100px;
+	float: right;
 	overflow-y: visible;
 
-	border: 1px solid black;
+	/*border: 1px solid black;*/
 }
 
 .header {
@@ -25,18 +29,27 @@ body {
 }
 
 .header .header_buttons {
+	padding: 10px;
 	margin-right: 100px;
 	float: right;
+}
+
+.header .header_buttons div {
+	display: inline-block;
+	margin: 10px;
+	font-size: 20px;
+	color: grey;
+	float: right;
+
+	cursor: pointer;
+}
+
+.background {
 
 }
 
-.header .buttons div {
-	display: inline-block;
-	margin: auto 5px;
-
-	background-color: #0084B4;
-
-	float: right;
+.background img {
+	z-index: -10;
 }
 
 .footer {
@@ -62,21 +75,28 @@ body {
 	border-radius: 5px 5px 0 0;
 }
 
+.profile .username {
+	display: inline-block;
+	font-size: 24px;
+	margin-left: 120px;
+}
+
 .profile .image {
 	width: 60px;
 	height: 60px;
 
 	border: 3px solid white;
 	border-radius: 10px;
-	position: relative;
 	float: right;
-	top: -30;
+	margin-top: -35px;
+	margin-right: 10px;
 
 	background-color: #0084B4;
 }
 
 .profile .image img {
 	width: 100%;
+	border-radius: 5px;
 }
 
 .tweets_container {
@@ -121,9 +141,9 @@ body {
 }
 
 .load {
-	height: 20px;
+	height: 30px;
 	background-color: #dbf6ff;
-	/*visibility: hidden;*/
+	text-align: center;
 }
 
 .tweets_menu {
@@ -153,4 +173,9 @@ body {
 
 .tweet p {
 	margin-left: 20px;
+}
+
+.tweet .timestamp {
+	color: lightblue;
+	cursor: pointer;
 }
